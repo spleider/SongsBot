@@ -2,25 +2,15 @@ import io
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize, sent_tokenize
 import nltk
+import gensim
+from gensim.models import Word2Vec
 
-
-strang = open('try1.txt')
+strang = "Gianni is a good boy because he helps old people to bring food at home."
 
 def clear_text(txt):
-    stop_wd = set(stopwords.words('english'))
-    tokens = word_tokenize(txt)
-    line = txt.read()  # Use this to read file content as a stream:
-    words = line.split()
-    for r in words:
-        print(r)
-        if not r in stop_wd:
-            appendFile = open('filteredtext.txt', 'a')
-            appendFile.write(" " + r)
-            print(appendFile)
-            appendFile.close()
-
-    return appendFile
+    #tokens = txt.replace("\n", " ")
+    filtered_words = [word for word in txt if word not in stopwords.words('english')]
+    return filtered_words
 
 
-
-
+print(clear_text(strang))
