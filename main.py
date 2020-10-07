@@ -8,7 +8,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 from SPARQLWrapper import SPARQLWrapper
 
 
-bot = telepot.Bot("1165813160:AAEHFyNb9pydhL9YyW43Ifnk09wMxIPlhtU")
+bot = telepot.Bot("1165813160:AAHeOi4DHXvSnwVYwLea3wcq9TgsGOhPUsM")
 '''
 q =  ('SELECT DISTINCT ?station, ?orbits WHERE { '
 '?station a <http://dbpedia.org/ontology/SpaceStation> . '
