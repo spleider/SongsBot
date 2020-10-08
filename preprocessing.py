@@ -5,12 +5,15 @@ import nltk
 import gensim
 from gensim.models import Word2Vec
 
-strang = "Gianni is a good boy because he helps old people to bring food at home."
+strang = "Gianni is a very good gang boy because he snaps helps old people to bring food at home."
 
 def clear_text(txt):
-    #tokens = txt.replace("\n", " ")
-    filtered_words = [word for word in txt if word not in stopwords.words('english')]
-    return filtered_words
-
+    stopwd = set(stopwords.words('english'))
+    tokens = word_tokenize(txt)
+    cleared_txt = []
+    for w in tokens:
+        if w not in stopwd:
+            cleared_txt.append(w)
+    return cleared_txt
 
 print(clear_text(strang))
