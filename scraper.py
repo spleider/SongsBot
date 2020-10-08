@@ -13,12 +13,11 @@ def take_source(url):
 
 
 def extract_corpus(source):
-
     soup = BeautifulSoup(source, "html.parser")
     corpus = []
     for e in soup.select("p"):
         corpus.append(e.text)
-        print(e.text)
+    return corpus
 
 
 

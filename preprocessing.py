@@ -5,7 +5,6 @@ import nltk
 import gensim
 from gensim.models import Word2Vec
 
-strang = "Gianni is a very good gang boy because he snaps helps old people to bring food at home."
 
 def clear_text(txt):
     stopwd = set(stopwords.words('english'))
@@ -16,4 +15,3 @@ def clear_text(txt):
             cleared_txt.append(w)
     return cleared_txt
 
-print(clear_text(strang))
