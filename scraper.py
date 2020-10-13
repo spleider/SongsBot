@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import bs4
 import requests
 
-url = "http://pitchfork.com/reviews/albums/22701-traditional-music-of-notional-species-vol-ii/"
 
 def take_source(url):
     if 'http://' or 'https://' in url:
@@ -14,9 +13,11 @@ def take_source(url):
 
 def extract_corpus(source):
     soup = BeautifulSoup(source, "html.parser")
+    soup.prettify().encode('cp1252', errors='ignore')
     corpus = []
     for e in soup.select("p"):
         corpus.append(e.text)
+
     return corpus
 
 

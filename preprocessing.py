@@ -6,6 +6,7 @@ import gensim
 from gensim.models import Word2Vec
 
 
+
 def clear_text(txt):
     stopwd = set(stopwords.words('english'))
     tokens = word_tokenize(txt)
@@ -15,3 +16,6 @@ def clear_text(txt):
             cleared_txt.append(w)
     return cleared_txt
 
+
+f = open('try1.txt', 'r')
+print(clear_text(f.read()))
