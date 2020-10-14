@@ -17,21 +17,21 @@ review_list = []
 artist_list = []
 
 #preparing the .txt file for storing the reviews
-with open('reviews.csv', 'w') as csvfile:
+with open('reviews.csv', 'w', encoding="utf-8") as csvfile:
         fieldnames = ['title', 'artist', 'review']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
 
 def append_csv(tit,art,rev):
-    with open('reviews.csv','a') as csv_f:
+    with open('reviews.csv','a', encoding="utf-8") as csv_f:
         writer = csv.DictWriter(csv_f, fieldnames=fieldnames)
         writer.writerow({'title': tit, 'artist':art,'review':rev})
 
 for i, row in df.iterrows():
     #print(row.__getitem__('url'))
-    album = (str(row.__getitem__('title')))
+    album = (str(row['title']))
     artist = (str(row.__getitem__('artist')))
-    review = str(scraper.extract_corpus(scraper.take_source(str(row.__getitem__('url')))))
+    review = (scraper.extract_corpus(scraper.take_source(row['url'])))
     append_csv(album,artist,review)
     print(type(review))
     #print(album + "\n", artist, type(artist))
