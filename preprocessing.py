@@ -4,18 +4,37 @@ from nltk.tokenize import word_tokenize, sent_tokenize
 import nltk
 import gensim
 from gensim.models import Word2Vec
+import pandas as pd
+import string
+
+
+df = pd.read_csv("reviews.csv", delimiter=',')
+print(df.head(),df.loc[1], df.index)
 
 
 
 def clear_text(txt):
-    stopwd = set(stopwords.words('english'))
+    # Tokenization
     tokens = word_tokenize(txt)
-    cleared_txt = []
-    for w in tokens:
-        if w not in stopwd:
-            cleared_txt.append(w)
-    return cleared_txt
+
+    #Lowercase conversion
+    tokens = [w.lower() for w in tokens]
+
+    #Removing punctuation
+    table = str.maketrans('', '', string.punctuation)
+    stripped = [w.translate(table) for w in tokens]
+
+    final_wds = [w for w in stripped if w.isalpha()]
+
+    #removing stopwords
+    stop_wd = set(stopwords.words('english'))
+    final_wds = [w for w in final_wds if not w in stop_wd]
+    print(final_wds)
 
 
-f = open('try1.txt', 'r')
-print(clear_text(f.read()))
+
+for i in range(0,18393):
+    print(type(df['review'].loc[i]))
+    print(clear_text(df['review'].loc[i]))
+    print(i)
+

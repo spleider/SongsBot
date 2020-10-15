@@ -2,8 +2,6 @@ from bs4 import BeautifulSoup
 import bs4
 import requests
 
-url = "https://www.codingcreativo.it/metodi-delle-liste-in-python/"
-
 def take_source(url):
         source = requests.get(url).text
         return source
