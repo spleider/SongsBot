@@ -24,13 +24,14 @@ def clear_text(txt):
     table = str.maketrans('', '', string.punctuation)
     stripped = [w.translate(table) for w in tokens]
 
+    #deleting all non-words
     final_wds = [w for w in stripped if w.isalpha()]
 
     #removing stopwords
     stop_wd = set(stopwords.words('english'))
     final_wds = [w for w in final_wds if not w in stop_wd]
-    print(final_wds)
 
+    return final_wds
 
 
 for i in range(0,18393):
