@@ -30,10 +30,9 @@ def append_csv(tit,art,rev):
 for i, row in df.iterrows():
     #print(row.__getitem__('url'))
     album = (str(row['title']))
-    artist = (str(row.__getitem__('artist')))
+    artist = (str(row['artist']))
     review = (scraper.extract_corpus(scraper.take_source(row['url'])))
     append_csv(album,artist,review)
-    print(type(review))
-    #print(album + "\n", artist, type(artist))
+    #print(type(review))
 
 print("Done")

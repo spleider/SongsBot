@@ -1,5 +1,6 @@
 import preprocessing
 import pandas as pd
+from gensim import corpora
 
 # Implementation of the tf-idf algorithm
 
@@ -13,15 +14,17 @@ def term_frequency(word, document):
             counter += 1
     return counter
 
-def document_frequency(word, docs):
-    doc_f_c = 0
-    for sing_doc in docs:
-        if word in sing_doc:
-            doc_f_c += 1
+dictionaries = []
+for i in range(0, 18393):
+    doc = preprocessing.clear_text(df['review'].loc[i])
+    dictionaries[i] = corpora.Dictionary(doc)
+    dictionaries[i].dfs
+
+
 
 
 #def inverse_document_frequency(N,df)
-
+'''
 for i in range(0, 18393):
     print(type(df['review'].loc[i]))
     clean_text = preprocessing.clear_text(df['review'].loc[i])
@@ -30,6 +33,7 @@ for i in range(0, 18393):
         print("Frequency of " + term + " in the" + str(i) + " document")
         print(term_frequency(term, clean_text))
 
+'''
 
 
 wor = "Gianni"
