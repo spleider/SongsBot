@@ -2,6 +2,7 @@ import io
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize, sent_tokenize
 from nltk.stem import PorterStemmer, LancasterStemmer
+from nltk.stem.wordnet import WordNetLemmatizer
 import nltk
 import gensim
 from gensim.models import Word2Vec
@@ -32,9 +33,12 @@ def clear_text(txt):
     final_wds = [w for w in final_wds if not w in stop_wd]
 
     #stemming process
-    stemmer = PorterStemmer()
-    final_wds = [stemmer.stem(w) for w in final_wds]
+    #stemmer = PorterStemmer()
+    #final_wds = [stemmer.stem(w) for w in final_wds]
 
+    #Lemmatizer
+    lemtz = WordNetLemmatizer()
+    final_wds = [lemtz.lemmatize(w) for w in final_wds]
 
     return final_wds
 

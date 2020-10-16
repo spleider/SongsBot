@@ -3,11 +3,12 @@ import pandas as pd
 from gensim import corpora
 import numpy
 import io
+from nltk.stem.wordnet import WordNetLemmatizer
 
 # Implementation of the tf-idf algorithm
 
-df = pd.read_csv("reviews.csv", delimiter=',')
-print(df.head(), df.loc[1], df.index)
+
+#print(df.head(), df.loc[1], df.index)
 
 def term_frequency(word, document):
     counter = 0
@@ -16,13 +17,15 @@ def term_frequency(word, document):
             counter += 1
     return counter
 
-f = open('dictionary.txt', "w", encoding="utf-8")
-for i in range(0, 18393):
-    clean_text = preprocessing.clear_text(df['review'].loc[i])
-    for term in clean_text:
-            f.writelines("\n"+term)
+def create_dict():
+    df = pd.read_csv("reviews.csv", delimiter=',')
+    f = open('dict.txt', "w", encoding="utf-8")
+    for i in range(0, 18393):
+        clean_text = preprocessing.clear_text(df['review'].loc[i])
+        for term in clean_text:
+                f.writelines("\n"+term)
 
-f.close()
+    f.close()
 
 #def inverse_document_frequency(N,df)
 '''
