@@ -13,8 +13,6 @@ query = pd.read_sql_query("SELECT url, artist, title FROM reviews;", con)
 
 #populating data frame with urls
 df = pd.DataFrame(query, columns=['url', 'artist', 'title'])
-review_list = []
-artist_list = []
 
 #preparing the .txt file for storing the reviews
 with open('reviews.csv', 'w', encoding="utf-8") as csvfile:

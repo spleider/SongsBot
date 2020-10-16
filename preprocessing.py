@@ -9,10 +9,6 @@ from gensim.models import Word2Vec
 import pandas as pd
 import string
 
-'''
-df = pd.read_csv("reviews.csv", delimiter=',')
-print(df.head(),df.loc[1], df.index)
-'''
 
 def clear_text(txt):
     #Tokenization
@@ -42,11 +38,5 @@ def clear_text(txt):
 
     return final_wds
 
-'''
-for i in range(0,18393):
-    print(type(df['review'].loc[i]))
-    print(clear_text(df['review'].loc[i]))
-    print(i)
 
-'''
 
