@@ -14,4 +14,3 @@ def extract_corpus(source):
 
     return corpus
 
-print(extract_corpus(take_source(url)))
