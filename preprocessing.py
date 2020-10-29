@@ -1,10 +1,9 @@
 import io
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer, LancasterStemmer
 from nltk.stem.wordnet import WordNetLemmatizer
 import string
-import re
 
 
 def clear_text(txt):
@@ -25,11 +24,7 @@ def clear_text(txt):
     stop_wd = set(stopwords.words('english'))
     final_wds = [w for w in final_wds if w not in stop_wd]
 
-    # stemming process
-    # stemmer = PorterStemmer()
-    # final_wds = [stemmer.stem(w) for w in final_wds]
-
-    # Lemmatizer
+    # lemmatizer
     lemtz = WordNetLemmatizer()
     final_wds = [lemtz.lemmatize(w) for w in final_wds]
     final_text = []
@@ -41,23 +36,6 @@ def clear_text(txt):
 
     return last
 
-'''
-def pre_process(text):
-    # lowercase
-    text = text.lower()
-
-    # remove tags
-    text = re.sub("", "", text)
-
-    # remove special characters and digits
-    text = re.sub("(\\d|\\W)+", " ", text)
-
-    return text
-'''
-
-
 
 print("\nClear Text result:\n")
 print(clear_text("Hello I'm Gianni and I am a very good person because I help animals"))
-print("\nLa mia bellissima funzione:\n")
-print(pre_process("Hello I'm Gianni and I am a very good person because I help animals"))
