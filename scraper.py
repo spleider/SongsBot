@@ -1,10 +1,12 @@
 from bs4 import BeautifulSoup
-import bs4
 import requests
 
+
+# This scraper.py module is useful for retrieving the paragraphs from the pitchfork website
 def take_source(url):
-        source = requests.get(url).text
-        return source
+    source = requests.get(url).text
+    return source
+
 
 def extract_corpus(source):
     soup = BeautifulSoup(source, "html.parser")
