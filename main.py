@@ -9,14 +9,6 @@ from SPARQLWrapper import SPARQLWrapper
 
 f = open('token.txt', "r")
 bot = telepot.Bot(f.read())
-'''
-q =  ('SELECT DISTINCT ?station, ?orbits WHERE { '
-'?station a <http://dbpedia.org/ontology/SpaceStation> . '
-'?station <http://dbpedia.org/property/orbits> ?orbits . '
-'FILTER(?orbits > 50000) } ORDER BY DESC(?orbits)')
-result = sparql.query('http://dbpedia.org/sparql', q)
-print(result.variables)
-'''
 
 
 def on_chat_message(msg):

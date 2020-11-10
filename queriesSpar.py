@@ -18,3 +18,5 @@ def queryMeth():
 
     for result in results["results"]["bindings"]:
         print(result["label"]["value"])
+
+        
