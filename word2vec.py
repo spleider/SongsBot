@@ -8,7 +8,7 @@ import nltk
 
 
 def create_model():
-    df = pd.read_csv("reviews.csv", delimiter=',')
+    df = pd.read_csv("Data/reviews.csv", delimiter=',')
 
     docs = df['review'].apply(lambda x: preprocessing.clear_text(x))
 
