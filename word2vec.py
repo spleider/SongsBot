@@ -26,8 +26,8 @@ def create_model():
 
 
 # create_model()
-model_s = Word2Vec.load("word2vec_skipgram.model")
-model_c = Word2Vec.load("word2vec_cbow.model")
+model_s = Word2Vec.load("Data/word2vec_skipgram.model")
+model_c = Word2Vec.load("Data/word2vec_cbow.model")
 
 
 print("\nSkipgram:")

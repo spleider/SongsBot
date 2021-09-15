@@ -10,7 +10,6 @@ con = sqlite3.connect("database.sqlite")
 # Creation of a pandas data frame
 query = pd.read_sql_query("SELECT url, artist, title FROM reviews;", con)
 
-
 # Populating data frame with urls
 df = pd.DataFrame(query, columns=['url', 'artist', 'title'])
 
@@ -21,7 +20,6 @@ with open('Data/reviews.csv', 'w', encoding="utf-8") as csvfile:
     writer.writeheader()
 
 
-#
 def append_csv(tit,art,rev):
     with open('Data/reviews.csv', 'a', encoding="utf-8") as csv_f:
         writer = csv.DictWriter(csv_f, fieldnames=fieldnames)
