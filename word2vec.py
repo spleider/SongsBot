@@ -5,8 +5,6 @@ import nltk
 
 
 # Creation and training of the Word2Vec model
-
-
 def create_model():
     df = pd.read_csv("Data/reviews.csv", delimiter=',')
 

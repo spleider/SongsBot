@@ -6,6 +6,8 @@ import pandas as pd
 sparql = SPARQLWrapper("http://dbpedia.org/sparql")
 
 
+# Method for retrieve a Dataframe with songs of the artist given in input
+# Query to DBpedia with SparqlQuery
 def get_dbpedia_results(artistname):
     sparql.setQuery("""select distinct
     ?song
@@ -37,17 +39,19 @@ def get_dbpedia_results(artistname):
     FILTER(langMatches(lang(?album_name_l),"en")).
     FILTER(langMatches(lang(?artist_l),"en")).
     FILTER(langMatches(lang(?genre_l),"en")).
-    FILTER(langMatches(lang(?recordLabel_l),"en"))."""+
+    FILTER(langMatches(lang(?recordLabel_l),"en")).
+    """+
     "BIND( '" + str(artistname)+"'"+""" AS ?name)
     FILTER (strstarts(lcase(str(?artist_l)), lcase(str(?name))))
     }
     group by ?song ?song_label ?album_name_l ?artist_l ?releaseDate
-    LIMIT 10""")
+    LIMIT 5""")
 
     sparql.setReturnFormat(JSON)
     query_response = sparql.query().convert()
     # print(query_response['results']['bindings'])
 
+    # Dataframe building
     df_results = pd.DataFrame(columns=['song_title', 'album', 'year', 'artist', 'label'])
 
     for result in query_response['results']['bindings']:
@@ -56,5 +60,3 @@ def get_dbpedia_results(artistname):
         df_results = df_results.append(series, ignore_index=True)
 
     return df_results
-
-print(get_dbpedia_results("Blonde Redhead"))

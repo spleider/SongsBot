@@ -13,6 +13,7 @@ def take_source(url):
 def extract_corpus(source):
     soup = BeautifulSoup(source, "html.parser")
     corpus = []
+    # Selection of the p tags (paragraphs) on the html
     for e in soup.select("p"):
         corpus.append(e.text)
 
