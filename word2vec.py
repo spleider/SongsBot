@@ -3,6 +3,8 @@ import preprocessing
 from gensim.models import Word2Vec, KeyedVectors
 import nltk
 
+model_s = Word2Vec.load("Data/word2vec_skipgram.model")
+model_c = Word2Vec.load("Data/word2vec_cbow.model")
 
 # Creation and training of the Word2Vec model
 def create_model():
@@ -22,14 +24,12 @@ def create_model():
     model1.save("word2vec_skipgram.model")
     model2.save("word2vec_cbow.model")
 
-
-# create_model()
-model_s = Word2Vec.load("Data/word2vec_skipgram.model")
-model_c = Word2Vec.load("Data/word2vec_cbow.model")
-
-
-print("\nSkipgram:")
-print(model_s.wv.most_similar('rap'))
-
-print("\nCbow:")
-print(model_c.wv.most_similar('rap'))
+# Function for retrieve similar words starting from a given list of words
+def return_similar(words, count):
+    results = []
+    while count >0:
+        for word in words:
+            vec = model_s.wv.most_similar(word)
+            results.extend(vec[:2])
+            count-=1
+    return results
