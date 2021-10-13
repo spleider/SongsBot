@@ -24,7 +24,6 @@ def create_model():
     model1.save("word2vec_skipgram.model")
     model2.save("word2vec_cbow.model")
 
-# Function for retrieve similar words starting from a given list of words
 def return_similar(words, count):
     results = []
     while count >0:
@@ -33,3 +32,10 @@ def return_similar(words, count):
             results.extend(vec[:2])
             count-=1
     return results
+
+
+# print("\nSkipgram:")
+# print(model_s.wv.most_similar('indie'))
+#
+# print("\nCbow:")
+# print(type(model_c.wv.most_similar('indie')))

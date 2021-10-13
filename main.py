@@ -25,7 +25,7 @@ def on_chat_message(msg):
     if content_type == 'text':
         name = msg["from"]["first_name"]
         txt = str(msg['text'])
-        if '/start'== txt:
+        if '/start' == txt:
             bot.sendMessage(chat_id, 'Hello {}! I\'m SongBot.'.format(name))
             bot.sendMessage(chat_id, "I can find some tracks based on your wishes.")
             bot.sendMessage(chat_id, "We can discovery a lot of new songs together.")
@@ -39,8 +39,23 @@ def on_chat_message(msg):
             matr = scipy.sparse.load_npz('Data/wc_matrix.npz')
             cvec = joblib.load("Data/countvec.pkl")
 
+            year = None
+            bef = False
+            aft = False
+            for word in txt.split(sep=" "):
+                if word.isdigit():
+                    if len(word) == 4:
+                        year = word
+                elif word == "before":
+                    bef = True
+                elif word == "after":
+                    aft = True
+
+
             # Compute tf-idf score on user message
             resp = tfidf.compute_tf_idf(matr, cvec, txt)
+
+            print(resp)
 
             # Retrieving artist name based on review search
             output = response_builder.manage_keywords(resp)
@@ -59,8 +74,13 @@ def on_chat_message(msg):
                     try:
                         df = pd.DataFrame()
                         # Retrieving artist's songs from the sparql endpoint on DBPEDIA
-                        df = queriesSpar.get_dbpedia_results(el[2])
+                        if year is None:
+                            df = queriesSpar.get_dbpedia_results(el[2])
 
+                        else:
+                            df = queriesSpar.get_dbpedia_results(el[2], year=year, bef=bef, aft=aft)
+
+                        df = df.drop_duplicates()
                         # Check for results
                         if df.shape[0] >= 1:
 
@@ -75,12 +95,14 @@ def on_chat_message(msg):
                                 bot.sendMessage(chat_id,"Title: " + str(row['song_title']))
                                 bot.sendMessage(chat_id, "Artist: "+ str(row['artist']))
                                 bot.sendMessage(chat_id, "Label: " + str(row['label']))
+                                bot.sendMessage(chat_id, "Year: " + str(row['year']))
                                 bot.sendMessage(chat_id, link)
                                 n_results = n_results - 1
                         else:
                             # If an artist doesn't match any song on DBPEDIA, we add it to another list.
                             # In this way I can return other related matches.
-                            related_results.append(el[2])
+                            if el[2] != "various artists":
+                                related_results.append(el[2])
                     except:
                         pass
 
@@ -89,6 +111,7 @@ def on_chat_message(msg):
                 bot.sendMessage(chat_id, "Sorry, no match found! :(")
             else:
                 # Managing the related section
+                bot.sendMessage(chat_id, "--------------------------------------------------")
                 bot.sendMessage(chat_id, "Here are some related results based on my search:")
                 for i in range(0,5):
                     kwd = related_results[i]
@@ -102,7 +125,7 @@ def on_chat_message(msg):
             bot.sendMessage(chat_id, "Thanks for using Songsbot! If you want to restart type /start")
 
 
-# Method for manage button module
+# Method for manage button module - NOT USED
 def on_callback_query(msg):
     query_id, from_id, query_data = telepot.glance(msg, flavor='callback_query')
     print("Callback Query: ", query_id, from_id, query_data)

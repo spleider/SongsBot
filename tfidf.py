@@ -7,8 +7,9 @@ import scipy.sparse
 import joblib
 
 
-# Creation of the word_count vector with
-
+# Creation of the word_count vector
+# Convert a collection of text documents to a matrix of token counts.
+# This implementation produces a sparse representation of the counts using scipy.sparse.csr_matrix.
 
 def get_word_count_vec():
     # Open the csv where are stored the reviews to use for compute IDF
@@ -26,24 +27,15 @@ def get_word_count_vec():
     # (useful for converting a collection of text documents to a matrix of token counts
     count_vec = CountVectorizer(stop_words=stopwd, max_df=0.85)
 
-
     # wc_matrix are the final term-document matrix with all the terms of the corpus
     wc_matrix = count_vec.fit_transform(docs)
-
-    #wc_matrix2 = count_vec2.fit_transform(docs)
 
     # Saving data for unigrams
     scipy.sparse.save_npz('Data/wc_matrix.npz', wc_matrix)
     joblib.dump(count_vec, "Data/countvec.pkl")
 
-    # Saving data for bigrams
-    #scipy.sparse.save_npz('Data/wc_matrix_bigrams.npz', wc_matrix2)
-    #joblib.dump(count_vec2, "Data/countvec_bigrams.pkl")
-
 
 # Method for compute the TF_IDF score for a given sentence (based on the reviews corpus)
-
-
 def compute_tf_idf(word_count_m, cvec, sentence):
     # Preprocessing the sentence
     clear_sentence = preprocessing.clear_text(sentence)
@@ -64,9 +56,3 @@ def compute_tf_idf(word_count_m, cvec, sentence):
     return result.values.tolist()
     # Print the results order by value
     # print(weights_df.sort_values(by='weight', ascending=False).head(5))
-
-
-# sf1 = scipy.sparse.load_npz('wc_matrix.npz')
-# cvec1 = joblib.load("countvec.pkl")
-
-# compute_tf_idf(sf, cvec, "I'd like to have an experimental hip hop album with some guitars and some breaks ")
