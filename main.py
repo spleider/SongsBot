@@ -10,7 +10,6 @@ import pandas as pd
 import youtube_module
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
 
-
 f = open('token.txt', "r")
 bot = telepot.Bot(f.read())
 
@@ -42,6 +41,89 @@ def on_chat_message(msg):
             year = None
             bef = False
             aft = False
+            gen = False
+            gen_n = []
+
+            music_genres = [
+                'Blues',
+                'Country',
+                'Dance',
+                'Disco',
+                'Funk',
+                'Grunge',
+                'Hip Hop',
+                'Jazz',
+                'Metal',
+                'Pop',
+                'Rhythm and Blues',
+                'Rap',
+                'Reggae',
+                'Rock',
+                'Industrial',
+                'Alternative',
+                'Ska',
+                'Death Metal',
+                'Techno',
+                'Ambient',
+                'Trip-Hop',
+                'Vocal',
+                'Jazz & Funk',
+                'Fusion',
+                'Trance',
+                'Classical',
+                'Instrumental',
+                'Acid',
+                'House',
+                'Gospel',
+                'Alternative Rock',
+                'Classic Rock',
+                'Bass',
+                'Soul',
+                'Punk',
+                'Ethnic',
+                'Gothic',
+                'Darkwave',
+                'Techno-Industrial',
+                'Electronic',
+                'Pop-Folk',
+                'Eurodance',
+                'Southern Rock',
+                'Comedy',
+                'Cult',
+                'Gangsta',
+                'Christian Rap',
+                'Funk',
+                'Jungle',
+                'New Wave',
+                'Psychedelic',
+                'Rave',
+                'Showtunes',
+                'Lo-Fi',
+                'Tribal',
+                'Acid Punk',
+                'Acid Jazz',
+                'Polka',
+                'Retro',
+                'Musical',
+                'Rock ’n’ Roll',
+                'Hard Rock',
+                'Folk',
+                'Heavy Metal',
+                'Black Metal',
+                'Breakbeat',
+                'Chillout',
+                'Downtempo',
+                'Dub',
+                'EDM',
+                'Eclectic',
+                'Electro',
+                'Electroclash',
+                'Emo',
+                'Experimental',
+                'Garage',
+                'Global',
+                'Lounge']
+
             for word in txt.split(sep=" "):
                 if word.isdigit():
                     if len(word) == 4:
@@ -50,7 +132,10 @@ def on_chat_message(msg):
                     bef = True
                 elif word == "after":
                     aft = True
-
+                else:
+                    for g in music_genres:
+                        if word in g.lower() and not gen_n:
+                            gen_n.append(g)
 
             # Compute tf-idf score on user message
             resp = tfidf.compute_tf_idf(matr, cvec, txt)
@@ -68,10 +153,11 @@ def on_chat_message(msg):
             related_results = []
             bot.sendMessage(chat_id, "Here are some results:")
 
-            while n_results > 0:
-                # For each candidate artist (el)
-                for el in output:
-                    try:
+
+            # For each candidate artist (el)
+            for el in output:
+                try:
+                    if n_results <= 3 and n_results >= 0:
                         df = pd.DataFrame()
                         # Retrieving artist's songs from the sparql endpoint on DBPEDIA
                         if year is None:
@@ -88,12 +174,12 @@ def on_chat_message(msg):
                             df = df.head(2)
                             for i, row in df.iterrows():
                                 # Formatting keyword and retrieving the youtube link
-                                search_kwd = str(row['song_title']) +str(row['artist'])
+                                search_kwd = str(row['artist'] + " " + str(row['song_title']))
                                 link = youtube_module.get_video_link(search_kwd)
 
                                 # Return output to user
-                                bot.sendMessage(chat_id,"Title: " + str(row['song_title']))
-                                bot.sendMessage(chat_id, "Artist: "+ str(row['artist']))
+                                bot.sendMessage(chat_id, "Title: " + str(row['song_title']))
+                                bot.sendMessage(chat_id, "Artist: " + str(row['artist']))
                                 bot.sendMessage(chat_id, "Label: " + str(row['label']))
                                 bot.sendMessage(chat_id, "Year: " + str(row['year']))
                                 bot.sendMessage(chat_id, link)
@@ -103,23 +189,33 @@ def on_chat_message(msg):
                             # In this way I can return other related matches.
                             if el[2] != "various artists":
                                 related_results.append(el[2])
-                    except:
-                        pass
+                except:
+                    pass
 
             # check for eventually no results available
             if n_results == 3:
-                bot.sendMessage(chat_id, "Sorry, no match found! :(")
+                bot.sendMessage(chat_id, "Sorry, no match found on DBpedia :( let's look for some related results! ")
+                bot.sendMessage(chat_id, "Let's look for some related results! ")
             else:
                 # Managing the related section
-                bot.sendMessage(chat_id, "--------------------------------------------------")
+                bot.sendMessage(chat_id, "-------------------------------------------------")
                 bot.sendMessage(chat_id, "Here are some related results based on my search:")
-                for i in range(0,5):
+                for i in range(0, 3):
                     kwd = related_results[i]
 
                     # For avoid non musical results, append Official to the search keyword
-                    link = youtube_module.get_video_link(kwd + " Official")
+                    link = youtube_module.get_video_link(kwd + " Official audio")
                     bot.sendMessage(chat_id, kwd)
                     bot.sendMessage(chat_id, link)
+
+            if gen_n:
+                bot.sendMessage(chat_id, "-------------------------------------------------")
+                bot.sendMessage(chat_id, "For you, a mix based on your genre:")
+                gen_n = " ".join(gen_n)
+
+                link = youtube_module.get_video_link(gen_n + " top tracks")
+                bot.sendMessage(chat_id, gen_n)
+                bot.sendMessage(chat_id, link)
 
             # Final message
             bot.sendMessage(chat_id, "Thanks for using Songsbot! If you want to restart type /start")
@@ -140,7 +236,6 @@ pprint(response)
 # Managing different inputs
 bot.message_loop({'chat': on_chat_message,
                   'callback_query': on_callback_query})
-
 
 # Keeping the program running
 while 1:
