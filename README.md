@@ -3,7 +3,7 @@ Repository for the SongsBot telegram bot.
 
 @author: Enrico Collu
 
-Project for the 2020 AI-NLP course of Università degli Studi di Cagliari.
+Project for the 2021 AI-NLP course of Università degli Studi di Cagliari.
 
 **Introduction**
 
@@ -55,11 +55,11 @@ All other modules of the project converge in this file.
 3) **datamanager.py** it takes care of creating the connection to the initial links database and managing the whole module for the creation of the new textual database. 
    It calls inside methods created in the scraper.py module (which allows you to carry out the work of retrieving the textual content from the pages).
    
-4) **queresSpar.py** contains the method to perform the SparQL query to DBpedia
+4) **queriesSparQL.py** contains the method to perform the SparQL queries to DBpedia
 
 5) **responsebuilder.py** it returns scores to the artists based on the keyword match within the reviews themselves.
 
-6) **youtube_module.py** contains the useful method to return the link of the youtube video corresponding to the artist sought (providing the first useful result)
+6) **youtube_module.py** contains the useful method to return the link of the YouTube video corresponding to the artist sought (providing the first useful result)
 
 **Usage of the bot**
 
@@ -71,4 +71,3 @@ All other modules of the project converge in this file.
 At that point the Bot will respond by providing instructions for use.
    
 4) The bot will return youtube videos of the songs it deems appropriate.
-_Obviously the quality of the matches is extremely limited by the quality of the dataset._
