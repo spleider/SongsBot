@@ -3,7 +3,6 @@ import pandas as pd
 import scraper
 import csv
 
-
 # connection with sqlite db
 con = sqlite3.connect("database.sqlite")
 
@@ -20,17 +19,17 @@ with open('Data/reviews.csv', 'w', encoding="utf-8") as csvfile:
     writer.writeheader()
 
 
-def append_csv(tit,art,rev):
+def append_csv(tit, art, rev):
     with open('Data/reviews.csv', 'a', encoding="utf-8") as csv_f:
-        writer = csv.DictWriter(csv_f, fieldnames=fieldnames)
-        writer.writerow({'title': tit, 'artist':art,'review':rev})
+        w = csv.DictWriter(csv_f, fieldnames=fieldnames)
+        w.writerow({'title': tit, 'artist': art, 'review': rev})
 
 
 for i, row in df.iterrows():
     album = (str(row['title']))
     artist = (str(row['artist']))
     review = (scraper.extract_corpus(scraper.take_source(row['url'])))
-    append_csv(album,artist,review)
+    append_csv(album, artist, review)
 
 
 print("Done")

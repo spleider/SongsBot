@@ -18,24 +18,19 @@ def create_model():
     # @params: doc_vec -> vector of documents
     #          min_count-> minimum word count
     #          size-> dimensionality of the embedding (size of the word vector)
-    model1 = Word2Vec(doc_vec, min_count=1, size=50, window=10, sg=1)
-    model2 = Word2Vec(doc_vec, min_count=1, size=50, window=10, sg=0)
+    model1 = Word2Vec(doc_vec, min_count=1, size=100, window=5, sg=1)
+    model2 = Word2Vec(doc_vec, min_count=1, size=100, window=5, sg=0)
 
     model1.save("word2vec_skipgram.model")
     model2.save("word2vec_cbow.model")
+    print("Model created")
 
 def return_similar(words, count):
     results = []
     while count >0:
         for word in words:
-            vec = model_s.wv.most_similar(word)
+            vec = model_c.wv.most_similar(word)
             results.extend(vec[:2])
             count-=1
     return results
 
-
-# print("\nSkipgram:")
-# print(model_s.wv.most_similar('indie'))
-#
-# print("\nCbow:")
-# print(type(model_c.wv.most_similar('indie')))

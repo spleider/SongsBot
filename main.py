@@ -5,7 +5,7 @@ import joblib
 import telepot
 import tfidf
 import response_builder
-import queriesSpar
+import queriesSparQL
 import pandas as pd
 import youtube_module
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton
@@ -142,6 +142,10 @@ def on_chat_message(msg):
 
             print(resp)
 
+            resp = [r for r in resp if r[1]> 0.0]
+
+            print(resp)
+
             # Retrieving artist name based on review search
             output = response_builder.manage_keywords(resp)
 
@@ -161,10 +165,10 @@ def on_chat_message(msg):
                         df = pd.DataFrame()
                         # Retrieving artist's songs from the sparql endpoint on DBPEDIA
                         if year is None:
-                            df = queriesSpar.get_dbpedia_results(el[2])
+                            df = queriesSparQL.get_dbpedia_results(el[2])
 
                         else:
-                            df = queriesSpar.get_dbpedia_results(el[2], year=year, bef=bef, aft=aft)
+                            df = queriesSparQL.get_dbpedia_results(el[2], year=year, bef=bef, aft=aft)
 
                         df = df.drop_duplicates()
                         # Check for results
@@ -200,8 +204,8 @@ def on_chat_message(msg):
                 # Managing the related section
                 bot.sendMessage(chat_id, "-------------------------------------------------")
                 bot.sendMessage(chat_id, "Here are some related results based on my search:")
-                for i in range(0, 3):
-                    kwd = related_results[i]
+                for rel in related_results:
+                    kwd = rel
 
                     # For avoid non musical results, append Official to the search keyword
                     link = youtube_module.get_video_link(kwd + " Official audio")
